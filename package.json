@@ -1,0 +1,32 @@
+{
+  "name": "ball",
+  "version": "1.0.0",
+  "description": "Accelerometer Ball Controll App (via device).",
+  "main": "app.js",
+  "scripts": {
+    "watch": "nodemon app.js -e js,pug",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itaouil95/Accelerometer-Ball-Control-App.git"
+  },
+  "keywords": [
+    "nodejs",
+    "pug",
+    "css",
+    "express",
+    "socket.io",
+    "web app"
+  ],
+  "author": "Ilyass",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itaouil95/Accelerometer-Ball-Control-App/issues"
+  },
+  "homepage": "https://github.com/itaouil95/Accelerometer-Ball-Control-App#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "pug": "^2.0.0-rc.2"
+  }
+}
