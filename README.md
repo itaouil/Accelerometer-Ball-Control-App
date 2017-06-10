@@ -10,7 +10,7 @@ A NodeJS application that lets you control a *ball* via an accelerometer powered
 
 #### Frontend:
 
-* Jade
+* Pug
 * CSS
 * JavaScript
 

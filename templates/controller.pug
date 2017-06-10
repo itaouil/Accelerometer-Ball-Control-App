@@ -1,0 +1,39 @@
+extends ./layout/app.pug
+  
+block scripts
+  script(src='/socket.io/socket.io.js')
+  script.
+    // Create socket connection
+    var socket = io('/#{id}');
+    
+    // Flag check
+    var inital = true;
+    
+    // Container for our device orientation data
+    var movement = [];
+
+    // Collect coordinates (browser)
+    window.addEventListener('deviceorientation', (event) => {
+      // Collect data
+      movement.push([Math.round(event.gamma), Math.round(event.beta)])
+      
+      // Send data individually
+      if (inital) {
+          socket.emit('movement', movement);
+      }
+      
+      // Send data to game
+      if (movement.length > 100) {
+        socket.emit('movement', movement);
+        inital = false;  
+      }
+      
+      // Clear data
+      if (movement.length > 500) {
+          movement = [];
+          inital = true;
+      }
+      
+    });
+  
+    

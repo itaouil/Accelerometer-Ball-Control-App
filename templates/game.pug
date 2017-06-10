@@ -16,5 +16,21 @@ block styles
 
 block content
   div.instructions.
-    Visit #[strong http://#{host}:#{port}/#{id}] on your device to get started.
+    Visit #[strong= "http://" + host + ":" + port + "/" + id] on your device to get started.
     
+block scripts
+  script(src='/socket.io/socket.io.js')
+  script.
+    // Connect to namespace
+    var socket = io('/#{id}');
+    
+    // Display ball if first connection
+    socket.on('connected', () => {
+        // Hide Message and show ball
+    });
+    
+    // Update ball on browser
+    socket.on('updateBall', (data) => {
+      // Array of coordinates
+      console.log(data);
+    });
