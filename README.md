@@ -17,3 +17,10 @@ A NodeJS application that lets you control a *ball* via an accelerometer powered
 #### Others:
 
 * SocketIO
+
+### How to play ?
+
+1. Fork
+2. Run ```npm run watch```
+3. Connect to localhost:port (on your server machine)
+4. Access controller via given url on your device.
