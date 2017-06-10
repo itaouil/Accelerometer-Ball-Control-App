@@ -15,7 +15,7 @@ block styles
     }
 
     .ball {
-      ball.position: absolute;
+      position: absolute;
       width: 100px;
       height: 100px;
       border-radius: 100%;
@@ -35,6 +35,16 @@ block content
 block scripts
   script(src='/socket.io/socket.io.js')
   script.
+    // Shim requestAnimationFrame layer
+    window.requestAnimationFrame = (function(){
+      return  window.requestAnimationFrame       ||
+              window.webkitRequestAnimationFrame ||
+              window.mozRequestAnimationFrame    ||
+              function( callback ){
+                window.setTimeout(callback, 1000 / 60);
+              };
+      })();
+    
     // Connect to namespace
     var socket = io('/#{id}');
 
@@ -85,6 +95,8 @@ block scripts
       ball.position.x += ball.velocity.x;
       ball.position.y += ball.velocity.y;
 
+      console.log(ball.position);
+
       // Collision detection
       if (ball.position.x > (windowWidth - ballSize) && ball.velocity.x > 0) {
         ball.position.x = windowWidth - ballSize;
@@ -106,5 +118,5 @@ block scripts
       ball.style.top = ball.position.y + 'px';
       ball.style.left = ball.position.x + 'px';
 
-      requestAnimationFrame(update());
+      requestAnimationFrame(update);
     })();
