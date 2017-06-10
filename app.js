@@ -24,12 +24,9 @@ app.get("/", (req, res, next) => {
 
   room.on('connection', (socket) => {
 
-    console.log('New Connection');
-
     var ready = false;
 
     socket.on('movement', (data) => {
-
       if (!ready) {
         room.emit('connected');
         ready = true;

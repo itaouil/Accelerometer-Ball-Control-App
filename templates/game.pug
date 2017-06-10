@@ -1,36 +1,110 @@
 extends ./layout/app.pug
 
 block styles
-  
+
   style.
     body {
       padding: 0;
       margin: 0;
-    }  
-    
+    }
+
     .instructions {
       text-align: center;
       margin-top: 40px;
       font-size: 2em;
     }
 
+    .ball {
+      ball.position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 100%;
+      background: #000;
+      display: none;
+      top: 100px;
+      left: 100px;
+    }
+
 block content
-  div.instructions.
+  div.instructions(id='instructions').
     Visit #[strong= "http://" + host + ":" + port + "/" + id] on your device to get started.
-    
+
+  // Create Ball
+  div.ball(id='ball')
+
 block scripts
   script(src='/socket.io/socket.io.js')
   script.
     // Connect to namespace
     var socket = io('/#{id}');
-    
+
+    // Ball element
+    var ball = document.getElementById('ball');
+
+    // Instruction element
+    var instructions = document.getElementById('instructions');
+
+    // Window size
+    var windowWidth  = window.innerWidth;
+    var windowHeight = window.innerHeight;
+    var ballSize     = 100;
+
+    // Ball properties
+    ball.velocity = {
+      x: 0,
+      y: 0
+    };
+
+    ball.position = {
+      x: 0,
+      y: 0
+    }
+
     // Display ball if first connection
     socket.on('connected', () => {
-        // Hide Message and show ball
+        // Show ball
+        ball.style.display = 'block';
+
+        // Get rid of message
+        instructions.style.display = 'none';
     });
-    
+
     // Update ball on browser
     socket.on('updateBall', (data) => {
-      // Array of coordinates
-      console.log(data);
+      // Compute velocities
+      for (var x = 0; x < data.length; x++) {
+        ball.velocity.x += data[x][1];
+        ball.velocity.y += data[x][0];
+      }
     });
+
+    // Animation Function
+    (function update() {
+
+      // Update position
+      ball.position.x += ball.velocity.x;
+      ball.position.y += ball.velocity.y;
+
+      // Collision detection
+      if (ball.position.x > (windowWidth - ballSize) && ball.velocity.x > 0) {
+        ball.position.x = windowWidth - ballSize;
+      }
+
+      if (ball.position.x < 0 && ball.velocity.x < 0) {
+        ball.position.x = 0;
+      }
+
+      if (ball.position.y < 0 && ball.velocity.y < 0) {
+        ball.position.y = 0;
+      }
+
+      if (ball.position.y > (windowHeight - ballSize) && ball.velocity.y > 0) {
+        ball.position.y = windowHeight - ballSize;
+      }
+
+      // Update CSS position
+      ball.style.top = ball.position.y + 'px';
+      ball.style.left = ball.position.x + 'px';
+
+      requestAnimationFrame(update());
+    })();
